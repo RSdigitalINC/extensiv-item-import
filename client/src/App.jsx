@@ -1,4 +1,15 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, Component } from "react";
+
+class ErrorBoundary extends Component {
+  state = { error: null };
+  static getDerivedStateFromError(error) { return { error }; }
+  render() {
+    if (this.state.error) {
+      return <div style={{ padding: 32, fontFamily: "sans-serif", color: "#d00" }}><strong>App error:</strong> {this.state.error.message}</div>;
+    }
+    return this.props.children;
+  }
+}
 import {
   Page, Card, BlockStack, InlineStack, Text, TextField,
   Button, Banner, Badge, Divider, Box, List,
@@ -6,7 +17,7 @@ import {
 import { getSessionToken } from "@shopify/app-bridge/utilities";
 import { useAppBridge } from "@shopify/app-bridge-react";
 
-export default function App() {
+function AppInner() {
   const app = useAppBridge();
   const [customerCode, setCustomerCode] = useState(import.meta.env.VITE_EXTENSIV_CUSTOMER_CODE ?? "");
   const [tag, setTag] = useState("");
@@ -106,4 +117,8 @@ export default function App() {
       </BlockStack>
     </Page>
   );
+}
+
+export default function App() {
+  return <ErrorBoundary><AppInner /></ErrorBoundary>;
 }
