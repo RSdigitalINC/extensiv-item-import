@@ -33,6 +33,16 @@ const REDIRECT_URI = `${APP_URL}/auth/callback`;
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Required for Shopify embedded apps — allows the admin iframe to load the app
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    `frame-ancestors https://${SHOPIFY_SHOP} https://admin.shopify.com`
+  );
+  next();
+});
+
 app.use(express.static(path.join(__dirname, "dist")));
 
 app.get("/auth", (req, res) => {
