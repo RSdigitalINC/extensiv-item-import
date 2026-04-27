@@ -9,6 +9,7 @@ import { useAppBridge } from "@shopify/app-bridge-react";
 export default function App() {
   const app = useAppBridge();
   const [customerCode, setCustomerCode] = useState(import.meta.env.VITE_EXTENSIV_CUSTOMER_CODE ?? "");
+  const [tag, setTag] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
@@ -20,7 +21,7 @@ export default function App() {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${sessionToken}` },
-        body: JSON.stringify({ customerCode }),
+        body: JSON.stringify({ customerCode, tag: tag.trim() || null }),
       });
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
@@ -29,7 +30,8 @@ export default function App() {
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const date = new Date().toISOString().slice(0, 10);
-      const filename = `Item_Import_Template_${customerCode}_${date}.xlsx`;
+      const tagSuffix = tag.trim() ? `_${tag.trim().replace(/\s+/g, "-")}` : "";
+      const filename = `Item_Import_Template_${customerCode}${tagSuffix}_${date}.xlsx`;
       const a = document.createElement("a");
       a.href = url; a.download = filename; a.click();
       URL.revokeObjectURL(url);
@@ -52,6 +54,7 @@ export default function App() {
             <Text variant="headingMd" as="h2">Generate Template</Text>
             <Divider />
             <TextField label="Extensiv Customer Code" helpText="Identifies your warehouse account. Appears in the filename (e.g. IWGUSA11)." value={customerCode} onChange={setCustomerCode} autoComplete="off" maxLength={20} />
+            <TextField label="Filter by Tag (optional)" helpText="Only export products with this tag. Leave blank to export all products." value={tag} onChange={setTag} autoComplete="off" />
             <InlineStack align="start">
               <Button variant="primary" size="large" loading={loading} onClick={handleGenerate} disabled={!customerCode.trim()}>
                 {loading ? "Generating…" : "Generate & Download"}

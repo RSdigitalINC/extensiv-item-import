@@ -11,9 +11,10 @@ const DEFAULTS = {
   expDateReq: "FALSE", enableCost: "FALSE", costRequired: "FALSE",
 };
 
-async function fetchAllProducts(shop, accessToken) {
+async function fetchAllProducts(shop, accessToken, tag) {
   const products = [];
-  let url = `https://${shop}/admin/api/${API_VERSION}/products.json?limit=250&fields=vendor,title,variants`;
+  const base = `https://${shop}/admin/api/${API_VERSION}/products.json?limit=250&fields=vendor,title,variants`;
+  let url = tag ? `${base}&tag=${encodeURIComponent(tag)}` : base;
   while (url) {
     const res = await fetch(url, { headers: { "X-Shopify-Access-Token": accessToken } });
     if (!res.ok) throw new Error(`Shopify ${res.status}: ${await res.text()}`);
@@ -126,8 +127,8 @@ async function buildXlsx(rows) {
   return wb.xlsx.writeBuffer();
 }
 
-export async function generateTemplate({ shop, accessToken, customerCode }) {
-  const products = await fetchAllProducts(shop, accessToken);
+export async function generateTemplate({ shop, accessToken, customerCode, tag }) {
+  const products = await fetchAllProducts(shop, accessToken, tag);
   const { rows, skipped } = buildRows(products);
   console.log(`[generate] ${rows.length} rows | ${skipped.length} skipped (no barcode)`);
   return buildXlsx(rows);
