@@ -13,8 +13,7 @@ const DEFAULTS = {
 
 async function fetchAllProducts(shop, accessToken, tag) {
   const products = [];
-  const base = `https://${shop}/admin/api/${API_VERSION}/products.json?limit=250&fields=vendor,title,variants`;
-  let url = tag ? `${base}&tag=${encodeURIComponent(tag)}` : base;
+  let url = `https://${shop}/admin/api/${API_VERSION}/products.json?limit=250&fields=vendor,title,variants,tags`;
   while (url) {
     const res = await fetch(url, { headers: { "X-Shopify-Access-Token": accessToken } });
     if (!res.ok) throw new Error(`Shopify ${res.status}: ${await res.text()}`);
@@ -23,6 +22,12 @@ async function fetchAllProducts(shop, accessToken, tag) {
     const link = res.headers.get("link") ?? "";
     const match = link.match(/<([^>]+)>;\s*rel="next"/);
     url = match ? match[1] : null;
+  }
+  if (tag) {
+    const normalised = tag.trim().toLowerCase();
+    return products.filter(p =>
+      (p.tags ?? "").split(",").map(t => t.trim().toLowerCase()).includes(normalised)
+    );
   }
   return products;
 }
