@@ -19,7 +19,7 @@ import { useAppBridge } from "@shopify/app-bridge-react";
 
 function AppInner() {
   const app = useAppBridge();
-  const [customerCode, setCustomerCode] = useState(import.meta.env.VITE_EXTENSIV_CUSTOMER_CODE ?? "");
+  const [customerCode, setCustomerCode] = useState("");
   const [tag, setTag] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(null);
@@ -41,8 +41,9 @@ function AppInner() {
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const date = new Date().toISOString().slice(0, 10);
+      const codePart = customerCode.trim() ? `_${customerCode.trim()}` : "";
       const tagSuffix = tag.trim() ? `_${tag.trim().replace(/\s+/g, "-")}` : "";
-      const filename = `Item_Import_Template_${customerCode}${tagSuffix}_${date}.xlsx`;
+      const filename = `Item_Import_Template${codePart}${tagSuffix}_${date}.xlsx`;
       const a = document.createElement("a");
       a.href = url; a.download = filename; a.click();
       URL.revokeObjectURL(url);
@@ -52,7 +53,7 @@ function AppInner() {
     } finally {
       setLoading(false);
     }
-  }, [app, customerCode]);
+  }, [app, customerCode, tag]);
 
   return (
     <Page title="Extensiv Item Import Generator" subtitle="Export your Shopify catalogue into a ready-to-upload Extensiv template">
@@ -64,10 +65,10 @@ function AppInner() {
           <BlockStack gap="400">
             <Text variant="headingMd" as="h2">Generate Template</Text>
             <Divider />
-            <TextField label="Extensiv Customer Code" helpText="Identifies your warehouse account. Appears in the filename (e.g. IWGUSA11)." value={customerCode} onChange={setCustomerCode} autoComplete="off" maxLength={20} />
+            <TextField label="Extensiv Customer Code (optional)" helpText="Appears in the downloaded filename. Leave blank if not needed." value={customerCode} onChange={setCustomerCode} autoComplete="off" maxLength={20} />
             <TextField label="Filter by Tag (optional)" helpText="Only export products with this tag. Leave blank to export all products." value={tag} onChange={setTag} autoComplete="off" />
             <InlineStack align="start">
-              <Button variant="primary" size="large" loading={loading} onClick={handleGenerate} disabled={!customerCode.trim()}>
+              <Button variant="primary" size="large" loading={loading} onClick={handleGenerate}>
                 {loading ? "Generating…" : "Generate & Download"}
               </Button>
             </InlineStack>

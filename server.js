@@ -86,13 +86,13 @@ app.post("/api/generate", verifySessionToken, async (req, res) => {
   const accessToken = process.env.SHOPIFY_ACCESS_TOKEN;
   if (!accessToken) return res.status(503).json({ error: "App not installed. Visit /auth first." });
   const customerCode = (req.body.customerCode ?? "").trim().toUpperCase();
-  if (!customerCode) return res.status(400).json({ error: "customerCode is required" });
   const tag = (req.body.tag ?? "").trim() || null;
   try {
     const buffer = await generateTemplate({ shop: SHOPIFY_SHOP, accessToken, customerCode, tag });
     const date = new Date().toISOString().slice(0, 10);
+    const codePart = customerCode ? `_${customerCode}` : "";
     const tagSuffix = tag ? `_${tag.replace(/\s+/g, "-")}` : "";
-    const filename = `Item_Import_Template_${customerCode}${tagSuffix}_${date}.xlsx`;
+    const filename = `Item_Import_Template${codePart}${tagSuffix}_${date}.xlsx`;
     res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
     res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     res.send(buffer);
