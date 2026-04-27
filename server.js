@@ -21,12 +21,17 @@ if (!SHOPIFY_API_KEY || !SHOPIFY_API_SECRET || !SHOPIFY_SHOP || !APP_URL) {
   process.exit(1);
 }
 
-const saved = loadToken();
-if (saved) {
-  process.env.SHOPIFY_ACCESS_TOKEN = saved.token;
-  console.log(`[startup] Loaded saved token for ${saved.shop}`);
+// Token priority: env var (Railway) → token file (local dev fallback)
+if (!process.env.SHOPIFY_ACCESS_TOKEN) {
+  const saved = loadToken();
+  if (saved) {
+    process.env.SHOPIFY_ACCESS_TOKEN = saved.token;
+    console.log(`[startup] Loaded saved token for ${saved.shop}`);
+  } else {
+    console.log("[startup] No saved token — visit /auth to install the app");
+  }
 } else {
-  console.log("[startup] No saved token — visit /auth to install the app");
+  console.log(`[startup] Using SHOPIFY_ACCESS_TOKEN from environment`);
 }
 
 const REDIRECT_URI = `${APP_URL}/auth/callback`;
@@ -61,7 +66,6 @@ app.get("/auth/callback", async (req, res) => {
     saveToken(shop, token);
     console.log(`[oauth] Token saved for ${shop}`);
     console.log(`[oauth] Access token: ${token}`);
-    console.log(`[oauth] → Copy this into Railway as SHOPIFY_ACCESS_TOKEN`);
     res.redirect(`https://${shop}/admin/apps/${SHOPIFY_API_KEY}`);
   } catch (err) {
     console.error("[oauth]", err.message);
