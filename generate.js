@@ -42,10 +42,12 @@ function buildRows(products) {
     for (const variant of product.variants) {
       const barcode = variant.barcode?.trim();
       if (!barcode) { skipped.push(`${product.vendor} - ${product.title} - ${variant.title}`); continue; }
-      const variantLabel = variant.title === "Default Title" ? "Default Title" : variant.title;
+      const variantLabel = variant.title === "Default Title" ? null : variant.title;
       rows.push({
         sku: barcode,
-        description: `${product.vendor} - ${product.title} - ${variantLabel}`,
+        description: variantLabel
+          ? `${product.vendor} - ${product.title} - ${variantLabel}`
+          : `${product.vendor} - ${product.title}`,
         description2: "", min: "", max: "", cycleCount: "", reorderQty: "",
         invMethod: "", temperature: "", cost: "", upc: barcode, ...DEFAULTS,
         qualifiers: "", storageSetup: "", variableSetup: "", nmfc: "",
