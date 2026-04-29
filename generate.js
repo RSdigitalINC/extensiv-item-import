@@ -110,8 +110,8 @@ const COLUMNS = [
 ];
 
 // Extensiv brand colors extracted from original template
-const COLOR_BERRY   = "FFD6006D"; // row 1 background (berry pink)
-const COLOR_TEAL    = "FF415364"; // required header background (dark teal)
+const COLOR_BERRY   = "FFD6006D"; // required header background (berry pink)
+const COLOR_TEAL    = "FF415364"; // row 1 background (dark navy/teal)
 const COLOR_WHITE   = "FFFFFFFF";
 const COLOR_DARK    = "FF000000";
 const COLOR_LIGHT   = "FFBFBFBF"; // non-required header font
@@ -127,14 +127,14 @@ async function buildXlsx(rows) {
     logoImageId = wb.addImage({ buffer: fs.readFileSync(logoPath), extension: "png" });
     ws.addImage(logoImageId, {
       tl: { col: 0, row: 0 },
-      br: { col: 3, row: 1 },
+      br: { col: 1.8, row: 0.6 },
       editAs: "oneCell",
     });
   }
 
   // ── Row 1: title bar ─────────────────────────────────────────────────────
   ws.getRow(1).height = 54;
-  const titleFill = { type: "pattern", pattern: "solid", fgColor: { argb: COLOR_BERRY } };
+  const titleFill = { type: "pattern", pattern: "solid", fgColor: { argb: COLOR_TEAL } };
 
   // Berry background across all columns
   for (let c = 1; c <= COLUMNS.length; c++) {
@@ -175,7 +175,7 @@ async function buildXlsx(rows) {
     cell.value = col.header;
     cell.alignment = { vertical: "middle", horizontal: "center", wrapText: true };
     if (col.required) {
-      cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: COLOR_TEAL } };
+      cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: COLOR_BERRY } };
       cell.font = { bold: true, size: 12, color: { argb: COLOR_WHITE }, name: "Calibri" };
     } else {
       cell.font = { bold: false, size: 12, color: { argb: COLOR_DARK }, name: "Calibri" };
