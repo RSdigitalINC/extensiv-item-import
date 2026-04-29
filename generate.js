@@ -59,54 +59,54 @@ function buildRows(products) {
   return { rows, skipped };
 }
 
-// required: true → dark teal bg (415364) matching actual Extensiv template
+// Widths and required flags match the original Extensiv template exactly
 const COLUMNS = [
-  { header: "SKU", key: "sku", width: 52, required: true },
-  { header: "Description", key: "description", width: 19, required: true },
-  { header: "Description2", key: "description2", width: 19 },
-  { header: "Min", key: "min", width: 13 },
-  { header: "Max", key: "max", width: 13 },
-  { header: "Cycle Count", key: "cycleCount", width: 13 },
-  { header: "ReorderQty", key: "reorderQty", width: 13 },
-  { header: "Inventory Method", key: "invMethod", width: 13 },
-  { header: "Temperature", key: "temperature", width: 13 },
-  { header: "Cost", key: "cost", width: 13 },
-  { header: "UPC", key: "upc", width: 13 },
-  { header: "Track Lot", key: "trackLot", width: 13, required: true },
-  { header: "Track Serial", key: "trackSerial", width: 13, required: true },
-  { header: "Track ExpDate", key: "trackExpDate", width: 13, required: true },
-  { header: "Primary Unit of Measure", key: "primaryUOM", width: 13, required: true },
-  { header: "Packaging Unit", key: "packagingUnit", width: 13, required: true },
-  { header: "Packing UOM Qty", key: "packingUOMQty", width: 13, required: true },
-  { header: "Length", key: "length", width: 13, required: true },
-  { header: "Width", key: "width", width: 13, required: true },
-  { header: "Height", key: "height", width: 13, required: true },
-  { header: "Weight", key: "weight", width: 13, required: true },
-  { header: "Qualifiers", key: "qualifiers", width: 13 },
-  { header: "Storage Setup", key: "storageSetup", width: 13 },
-  { header: "Variable Setup", key: "variableSetup", width: 13 },
-  { header: "NMFC#", key: "nmfc", width: 13 },
-  { header: "Lot Number Required", key: "lotNumReq", width: 13, required: true },
-  { header: "Serial Number Required", key: "serialNumReq", width: 13, required: true },
-  { header: "Serial Number (must be unique)", key: "serialNum", width: 13, required: true },
-  { header: "Exp Date Req", key: "expDateReq", width: 13, required: true },
-  { header: "Enable Cost", key: "enableCost", width: 13, required: true },
-  { header: "Cost Required", key: "costRequired", width: 13, required: true },
-  { header: "IsHazMat", key: "isHazMat", width: 13 },
-  { header: "HazMatID", key: "hazMatID", width: 13 },
-  { header: "HazMatShippingName", key: "hazMatShip", width: 13 },
-  { header: "HazMatHazardClass", key: "hazMatClass", width: 13 },
-  { header: "HazMatPackingGroup", key: "hazMatPack", width: 13 },
-  { header: "HazMatFlashPoint", key: "hazMatFlash", width: 13 },
-  { header: "HazMatLabelCode", key: "hazMatLabel", width: 13 },
-  { header: "HazMatFlag", key: "hazMatFlag", width: 13 },
-  { header: "Image URL", key: "imageURL", width: 13 },
-  { header: "StorageCountScriptTemplateID", key: "storageScript", width: 13 },
-  { header: "StorageRates", key: "storageRates", width: 13 },
-  { header: "OutboundMobileSerializationBehavior", key: "outboundSer", width: 13 },
-  { header: "Price", key: "price", width: 13 },
-  { header: "TotalQty", key: "totalQty", width: 13 },
-  { header: "UnitType", key: "unitType", width: 13 },
+  { header: "SKU",                                   key: "sku",          width: 52.14,  required: true  },
+  { header: "Description",                           key: "description",  width: 19.43,  required: true  },
+  { header: "Description2",                          key: "description2", width: 19.29                   },
+  { header: "Min",                                   key: "min",          width: 13.29                   },
+  { header: "Max",                                   key: "max",          width: 13.29                   },
+  { header: "Cycle Count",                           key: "cycleCount",   width: 28.71                   },
+  { header: "ReorderQty",                            key: "reorderQty",   width: 28.71                   },
+  { header: "Inventory Method",                      key: "invMethod",    width: 28.71                   },
+  { header: "Temperature",                           key: "temperature",  width: 22.71                   },
+  { header: "Cost",                                  key: "cost",         width: 13.29                   },
+  { header: "UPC",                                   key: "upc",          width: 29                      },
+  { header: "Track Lot",                             key: "trackLot",     width: 13.29,  required: true  },
+  { header: "Track Serial",                          key: "trackSerial",  width: 16.71,  required: true  },
+  { header: "Track ExpDate",                         key: "trackExpDate", width: 20.43,  required: true  },
+  { header: "Primary Unit of Measure",               key: "primaryUOM",   width: 31.29,  required: true  },
+  { header: "Packaging Unit",                        key: "packagingUnit",width: 23.14,  required: true  },
+  { header: "Packing UOM Qty",                       key: "packingUOMQty",width: 23.86,  required: true  },
+  { header: "Length",                                key: "length",       width: 13.29,  required: true  },
+  { header: "Width",                                 key: "width",        width: 11.43,  required: true  },
+  { header: "Height",                                key: "height",       width: 12.14,  required: true  },
+  { header: "Weight",                                key: "weight",       width: 13.29,  required: true  },
+  { header: "Qualifiers",                            key: "qualifiers",   width: 15.14                   },
+  { header: "Storage Setup",                         key: "storageSetup", width: 22.14                   },
+  { header: "Variable Setup",                        key: "variableSetup",width: 23.43                   },
+  { header: "NMFC#",                                 key: "nmfc",         width: 14.29                   },
+  { header: "Lot Number Required",                   key: "lotNumReq",    width: 27.43,  required: true  },
+  { header: "Serial Number Required",                key: "serialNumReq", width: 31.86,  required: true  },
+  { header: "Serial Number (must be unique)",        key: "serialNum",    width: 40.43,  required: true  },
+  { header: "Exp Date Req",                          key: "expDateReq",   width: 20.29,  required: true  },
+  { header: "Enable Cost",                           key: "enableCost",   width: 16.43,  required: true  },
+  { header: "Cost Required",                         key: "costRequired", width: 19.71,  required: true  },
+  { header: "IsHazMat",                              key: "isHazMat",     width: 15.71                   },
+  { header: "HazMatID",                              key: "hazMatID",     width: 18.29                   },
+  { header: "HazMatShippingName",                    key: "hazMatShip",   width: 29.71                   },
+  { header: "HazMatHazardClass",                     key: "hazMatClass",  width: 27                      },
+  { header: "HazMatPackingGroup",                    key: "hazMatPack",   width: 30.29                   },
+  { header: "HazMatFlashPoint",                      key: "hazMatFlash",  width: 26.43                   },
+  { header: "HazMatLabelCode",                       key: "hazMatLabel",  width: 23.43                   },
+  { header: "HazMatFlag",                            key: "hazMatFlag",   width: 18.43                   },
+  { header: "Image URL",                             key: "imageURL",     width: 27.29                   },
+  { header: "StorageCountScriptTemplateID",          key: "storageScript",width: 40.71                   },
+  { header: "StorageRates",                          key: "storageRates", width: 22.29                   },
+  { header: "OutboundMobileSerializationBehavior",   key: "outboundSer",  width: 48.29                   },
+  { header: "Price",                                 key: "price",        width: 13.14                   },
+  { header: "TotalQty",                              key: "totalQty",     width: 14.43                   },
+  { header: "UnitType",                              key: "unitType",     width: 16.29                   },
 ];
 
 // Extensiv brand colors extracted from original template
@@ -126,8 +126,8 @@ async function buildXlsx(rows) {
   if (fs.existsSync(logoPath)) {
     logoImageId = wb.addImage({ buffer: fs.readFileSync(logoPath), extension: "png" });
     ws.addImage(logoImageId, {
-      tl: { col: 0, row: 0 },
-      br: { col: 1.8, row: 0.6 },
+      tl: { col: 0.745, row: 0.198 },
+      br: { col: 2.0,   row: 0.982 },
       editAs: "oneCell",
     });
   }
@@ -149,7 +149,7 @@ async function buildXlsx(rows) {
   const titleCell = ws.getCell("F1");
   titleCell.value = "Item Import Template";
   titleCell.fill = titleFill;
-  titleCell.font = { bold: true, size: 14, color: { argb: COLOR_WHITE }, name: "Calibri" };
+  titleCell.font = { size: 28, color: { argb: COLOR_WHITE }, name: "Calibri", family: 2 };
   titleCell.alignment = { vertical: "middle", horizontal: "center" };
 
   // "*Berry headers are required fields" in J1:M1
@@ -157,7 +157,7 @@ async function buildXlsx(rows) {
   const noteCell = ws.getCell("J1");
   noteCell.value = " *Berry headers are required fields";
   noteCell.fill = titleFill;
-  noteCell.font = { italic: true, size: 10, color: { argb: COLOR_WHITE }, name: "Calibri" };
+  noteCell.font = { bold: true, size: 12, color: { argb: COLOR_WHITE }, name: "Calibri", family: 2 };
   noteCell.alignment = { vertical: "middle", horizontal: "left" };
 
   // Fill remaining merged groups with berry bg (matching template structure)
